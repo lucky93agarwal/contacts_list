@@ -29,12 +29,20 @@ class _ContactListScreenState extends State<ContactListScreen> {
       print(_contacts.toString());
     }
   }
+  _incrementCounter(){
+    
+  }
 
   @override
   Widget build(BuildContext context) => MaterialApp(
       home: Scaffold(
           appBar: AppBar(title: const Text('Contacts List')),
-          body: _body()));
+          body: _body(),
+        floatingActionButton: FloatingActionButton(
+          onPressed: _incrementCounter,
+          tooltip: 'Increment',
+          child: const Icon(Icons.add),
+        ),));
 
   Color _randomColor() {
     Color newColor = Color((Random().nextDouble() * 0xFFFFFF).toInt()).withOpacity(0.3);
