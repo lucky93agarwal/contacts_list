@@ -1,7 +1,5 @@
 # contact_list
 
-# flutter_google_map
-
 ## Screen
 <img src="https://github.com/lucky93agarwal/contacts_list/assets/53622073/af2213fd-5fa7-44ef-b09e-92b8a9188db9" width="200"  title="Home Map"/>
 
