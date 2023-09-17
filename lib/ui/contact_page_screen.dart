@@ -1,6 +1,9 @@
 import 'package:contact_list/utils/font_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_contacts/flutter_contacts.dart';
+import 'package:get/get.dart';
+
+import '../utils/get_data.dart';
 
 class ContactPage extends StatelessWidget {
   final Contact contact;
@@ -11,38 +14,27 @@ class ContactPage extends StatelessWidget {
   Widget build(BuildContext context) => Scaffold(
       appBar: AppBar(title: Text(contact.displayName)),
       body: Column(children: [
-        Container(height: 200,
-        margin: const EdgeInsets.all(20),
+        Container(height: 250,
+        width: Get.width,
         decoration: BoxDecoration(
           color: Colors.lightBlue,
-          shape: BoxShape.circle,
-          boxShadow: [
-            BoxShadow(
-              color: Colors.grey.withOpacity(0.5), //shadow color
-              spreadRadius: 5, // spread radius
-              blurRadius: 7, // shadow blur radius
-              offset: const Offset(0, 3), // changes position of shadow
-            ),
-            BoxShadow(
-              color: Colors.white.withOpacity(0.5),
-              spreadRadius: 3,
-              blurRadius: 7,
-              offset: const Offset(0, -3), // changes position of shadow
-            ),
-          ],
+          shape: BoxShape.rectangle,
           image:contact.photoOrThumbnail != null?
           DecorationImage(
               image: MemoryImage(contact.photoOrThumbnail!),
               fit: BoxFit.cover):
           null,
-
         ),),
-        Text(contact.name.first,style: FontUtilities.h30(
+        SizedBox(height: 20,),
+        Text(contact.name.first,style: FontUtilities.h24(
             fontColor: Colors.black, fontWeight: FWT.regular),),
         Text('Last name: ${contact.name.last}'),
-        Text('Phone number: ${contact.phones.isNotEmpty ? contact.phones.first.number : '(none)'}'),
+        Text('Phone number: ${contact.phones.isNotEmpty ? GetData.getMobileNo(contact) : '(none)'}'),
+        Text('Address: '+(GetData.checkAddress(contact)?GetData.getAddress(contact):"")),
         Text(
             'Email address: ${contact.emails.isNotEmpty ? contact.emails.first.address : '(none)'}'),
       ]));
+
+
 
 }

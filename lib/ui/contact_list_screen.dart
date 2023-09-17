@@ -1,5 +1,6 @@
 import 'package:contact_list/ui/contact_page_screen.dart';
 import 'package:contact_list/utils/font_utils.dart';
+import 'package:contact_list/utils/get_data.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_contacts/flutter_contacts.dart';
 import 'dart:math';
@@ -30,7 +31,7 @@ class _ContactListScreenState extends State<ContactListScreen> {
     }
   }
   _incrementCounter(){
-    
+
   }
 
   @override
@@ -44,26 +45,7 @@ class _ContactListScreenState extends State<ContactListScreen> {
           child: const Icon(Icons.add),
         ),));
 
-  Color _randomColor() {
-    Color newColor = Color((Random().nextDouble() * 0xFFFFFF).toInt()).withOpacity(0.3);
 
-    while (_alreadyUsedColors.contains(newColor)) {
-      newColor = Color((Random().nextDouble() * 0xFFFFFF).toInt())
-          .withOpacity(0.3);
-    }
-    _alreadyUsedColors.add(newColor);
-    return newColor;
-  }
-  Color _randomColorDark() {
-    Color newColor = Color((Random().nextDouble() * 0xFFFFFF).toInt()).withOpacity(1.0);
-    while (_alreadyUsedColors.contains(newColor)) {
-      newColor = Color((Random().nextDouble() * 0xFFFFFF).toInt())
-          .withOpacity(1.0);
-    }
-    _alreadyUsedColors.add(newColor);
-    return newColor;
-  }
-  final List<Color> _alreadyUsedColors = [];
 
   Widget _body() {
     if (_permissionDenied) {
@@ -82,28 +64,24 @@ class _ContactListScreenState extends State<ContactListScreen> {
                 height: 45,
                 alignment: Alignment.center,
                 decoration: BoxDecoration(
-                  color: _randomColor(),
+                  color: GetData.randomColor(),
                   shape: BoxShape.circle,
-                  image:_contacts![i].photoOrThumbnail != null?
+                  image:GetData.checkPhotoOrThumbnail(_contacts![i])?
                   DecorationImage(
                       image: MemoryImage(_contacts![i].photoOrThumbnail!),
                       fit: BoxFit.cover):
                   null,
                 ),
-                child: _contacts![i].photoOrThumbnail != null?null: Text(
-                  _contacts![i].displayName.substring(0,1).toUpperCase(),
-                  style: FontUtilities.h26(
-                      fontColor: _randomColorDark(), fontWeight: FWT.regular),
+                child: Visibility(
+                  visible: !GetData.checkPhotoOrThumbnail(_contacts![i]),
+                  child: Text(GetData.getUserNameFirstLatter(_contacts![i]),
+                    style: FontUtilities.h26(
+                        fontColor: GetData.randomColorDark(), fontWeight: FWT.regular),
+                  ),
                 ),
               ),
-              title: Text(
-                _contacts![i].displayName.substring(0,1).toUpperCase()+_contacts![i].displayName.substring(1,_contacts![i].displayName.length),
-              ),
-              subtitle: _contacts![i].addresses.length>0?
-              Text(_contacts![i].addresses[0].city.length>0?(_contacts![i].addresses[0].city+", "):""+
-                  (_contacts![i].addresses[0].state.length>0?_contacts![i].addresses[0].state+", ":"")+
-                  (_contacts![i].addresses[0].country.length>0?_contacts![i].addresses[0].country:"")
-              ):null,
+              title: Text(GetData.getUserName(_contacts![i])),
+              subtitle: GetData.checkAddress(_contacts![i]) ? Text(GetData.getAddress(_contacts![i])) : null,
               titleTextStyle: FontUtilities.h16(
                   fontColor: const Color(0xff272d37), fontWeight: FWT.medium),
               onTap: () async {
@@ -116,4 +94,5 @@ class _ContactListScreenState extends State<ContactListScreen> {
 
     );
   }
+
 }
